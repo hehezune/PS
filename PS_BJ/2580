@@ -1,0 +1,13 @@
+//2580
+let fs = require('fs');
+let input = fs.readFileSync('testinput').toString().trim().split('\n');
+input = input.map((elem) => elem.split(' '));
+
+
+
+
+function sudocuAnswer(board) {
+    
+}
+
+console.log(input);

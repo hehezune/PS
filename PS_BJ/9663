@@ -1,0 +1,39 @@
+//9663
+
+//let fs = require('fs');
+//let input = fs.readFileSync('/dev/stdin').toString().trim();
+let count = 0;
+for (let i = 1; i < 15; i++){
+nQueen(0, i, []);
+console.log(count);
+count = 0;}
+
+function nQueen(index, maxN, board) {
+    if (index == maxN) {
+        count++;
+    } else {
+        for (let i = 0; i < maxN; i++) {
+
+            if (collapseCheck(board, i)) {
+                board.push(i);
+                nQueen(index + 1, maxN, board);
+                board.pop();
+            } 
+        }
+    }
+}
+
+function collapseCheck(board, target) {
+    let length = board.length;
+
+    for (let index = 0; index < length; index++) {
+        if (board[index] == target) {
+            return false;
+        } else if (index - length == board[index] - target) {
+            return false;
+        } else if (index - length == target - board[index]) {
+            return false;
+        }
+    }
+    return true;
+}

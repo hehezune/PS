@@ -1,0 +1,129 @@
+//linked list
+function LinkedList() {
+
+    let Node = function(element) {
+        this.element = element;
+        this.next = null;
+    };
+
+    let length = 0;
+    let head = null;
+
+    this.append = function(element){
+
+        let node = new Node(element), current; //node.next는 그 자체 값을 가지는게 아니고 가리킨다는 것을 항상 유의
+
+        if (head == null) {
+            head = node;
+        } else {
+            current = head;
+            while (current.next) {
+                current = current.next;
+            }
+            current.next = node;
+        }
+        length++;
+    };
+    this.insert = function(position, element) {
+        if (position >= 0 && position <= length) {
+
+            let node = new Node(element), current = head, previous, index = 0;
+
+            if (position === 0) {
+                node.next = current; // head가 가리키던 list : current, 앞에서 current = head였는데, current가 곧 head라는게 아니라, 
+                                    // head가 가리키던 node가 곧  current라는  뜻
+                head = node;
+            } else {
+                while (index++ < position) {
+                    previous = current;
+                    current = current.next;
+                }
+                node.next = current;
+                previous.next = node; // node가 현재 insert할 내용임. 즉 current에 해당하는 정보라는 의미
+            }
+            length++;
+
+            return true;
+        } else {
+            return false;
+        }
+    };
+    this.removeAt = function(position){
+        if (position > -1 && position < length) {
+            let current = head, previous, index = 0;
+            if (position === 0) {
+                head = current.next;
+            } else {
+                while (index++ < position) {
+                    previous = current;
+                    current = current.next;
+                }
+                previous.next = current.next;
+            }
+            length--;
+            return current.element;
+        } else {
+            return null;
+        }
+    };
+    this.remove = function(element){ //indexOf와 removeAt을 조합하여 구현
+        let index = this.indexof(element);
+
+        return this.removeAt(index);
+    };
+    this.indexof = function(element){
+        let current = head, index = 0; // 책은 index를 -1부터 시작하도록 했는데 아무리 봐도 아닌것 같아 0 스타트로 수정함
+
+        while (current) {
+            if (element === current.element) {
+                return index;
+            }
+            index++;
+            current = current.next;
+        }
+
+        return -1
+    };
+    this.isEmpty = function(){
+        return length === 0;
+    };
+    this.size = function(){
+        return length;
+    };
+    this.toString = function(){
+        let current = head;
+        string = '';
+
+        while (current) {
+            string += current.element;
+            current = current.next;
+        }
+        return string;
+    };
+    this.print = function(){
+        let current = head;
+        while (current) {
+            console.log(current.element);
+            current = current.next;
+        }
+        //Q. element만 보보게  할  수  있는 방법이 없을까
+    };
+    this.getHead = function() {
+        return head;
+    }
+}
+
+let list = new LinkedList();
+list.append(15);
+list.print();
+list.append(10);
+list.print();
+list.insert(2, 77);
+list.print();
+console.log(list.toString());
+console.log(list.indexof(278));
+console.log();
+console.log(list.remove(77));
+console.log();
+list.print();
+console.log(list.getHead());

@@ -1,0 +1,100 @@
+//1966
+let fs = require('fs');
+let input = fs.readFileSync('testinput').toString().split('\n');
+let testCase = Number(input[0]);
+let lineIndex = 1;
+let result = "";
+
+while (testCase-- > 0) {
+    let [N, M] = input[lineIndex++].split(' ');
+	let sequence = input[lineIndex++].split(' ').map(x => +x);
+	let printList = new PriorityQueue();
+	for (let i = 0; i < N; i++)
+		printList.append(sequence[i], i);
+
+	while (printList.length >= 0) {
+		if (printList.search() === 1) {
+			let temp = printList.shift();
+			printList.append(temp.val, temp.sequenceIndex);
+		} else {
+			let temp = printList.getHead();
+			if (temp == M) {
+				printList.shift();
+				result += printList.numberOfPrint + "\n";
+				break;
+			} else {
+				printList.shift();
+			}
+		}
+	}
+}
+
+console.log(result);
+
+function PriorityQueue() {
+    let head, tail, current;
+
+    function LinkedListNode(val, index) {
+		this.val = val;
+		this.sequenceIndex = index;
+        this.next = null;
+	}
+	this.append = function(val, index) {
+		if (this.length === 0) {
+			head = new LinkedListNode(val, index);
+			tail = head;
+		} else if (this.length === 1) {
+			let node = new LinkedListNode(val, index);
+			tail.next = node;
+			tail = tail.next;
+			head.next = tail;
+			current = head;
+		} else {
+			let node = new LinkedListNode(val, index);
+			tail.next = node;
+			tail = tail.next;
+		}
+		this.length++;
+	}
+	this.shift = function() {
+		let temp = head;
+		if (this.length === 1) {
+			head = null;
+		} else {
+			head = head.next;
+		}
+		this.length--;
+		return temp;
+	}
+	this.search = function() {
+		current = head;
+		let target = current.val;
+		while (current.next !== null) {
+			if (target < current.next.val) {
+				current = head;
+				return 1;
+			} else {
+				current = current.next;
+			}
+		}
+		this.numberOfPrint++;
+		current = head;
+		return 0;
+	}
+	this.getHead = function() {
+		return head.sequenceIndex;
+	}
+	this.numberOfPrint = 0;
+	this.length = 0;
+	this.scan = function() {
+		let temp = "";
+		current = head;
+		while (current) {
+			temp += current.val + " ";
+			current = current.next;
+		}
+		current = head;
+		console.log(temp);
+	}
+
+}

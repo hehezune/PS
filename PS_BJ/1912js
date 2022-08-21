@@ -1,0 +1,15 @@
+//1912
+let fs = require('fs');
+let input = fs.readFileSync('testinput').toString().split('\n');
+let n = Number(input[0]);
+let sequence = input[1].split(' ').map(Number);
+let length = sequence.length;
+//compress를 reduce로 구현해볼 것
+let dp = Array.from({length : length}, (v, i) => 0);
+dp[length - 1] = sequence[length - 1];
+let temp = dp[length - 1];
+for (i = length - 2; i >= 0; i--) {
+	dp[i] = Math.max(sequence[i], dp[i + 1] + sequence[i]);
+	temp = Math.max(dp[i], temp);
+}
+console.log(temp);
