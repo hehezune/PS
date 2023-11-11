@@ -10,6 +10,11 @@
 
 코딩테스트 연습 > SELECT
 
+### 포인트
+NULL 컬럼 사용법 : NULL 컬럼 명
+UNION ALL 사용 : 테이블별 결과를 단순 더하기, ORDER BY는 통합해서 보여줘야함
+DATE 컬럼 표기 방식 정하기 : DATE_FORMAT(컬럼명, "%Y-%m-%d") 다른 형식들 있는지도 찾아보기
+
 ### 채점결과
 
 Empty
