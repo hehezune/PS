@@ -1,0 +1,55 @@
+# 순위_49191
+- 컴퓨터공학적 사고?
+- 문제 풀이 덜하니 퇴화함
+
+## 취약점
+- 너무 어렵게 접근했다.
+  최대 count 수(모든 경기에 대한 데이터가 있는 플레이어)를 찾고 그 기준 상하 순위로 하나하나 찾으려 했다
+- 하지만 간단하게 3중 포문으로 모든 승패 경우의 수를 일단 적용한 다음에, count == n - 1인 경우만 찾으면 되는 것이었다.
+- count == n - 1 인 조건은 자기 자신과의 경기는 카운트에 들어가지 않기 때문..
+
+## 코드
+```java
+import java.util.*;
+
+class Solution {
+    int[][] match;
+    public int solution(int n, int[][] results) {
+        match = new int[n + 1][n + 1];
+        
+        for (int[] result : results) {
+            int A = result[0], B = result[1];
+            match[A][B] = 1;
+            match[B][A] = -1;
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                for (int k = 1; k <= n; k++) {
+                    if (match[i][k] == 1 && match[k][j] == 1) {
+                        match[i][j] = 1;
+                        match[j][i] = -1;
+                    }
+                    if (match[i][k] == -1 && match[k][j] == -1) {
+                        match[i][j] = -1;
+                        match[j][i] = 1;
+                    }
+                }
+            }
+        }
+        int answer = 0;
+        
+        for (int i = 1; i <= n; i++) {
+            int count = 0;
+            for (int j = 1; j <= n; j++) {
+                if (match[i][j] == 0) continue;
+                count++;
+            }
+            if (count == n - 1) {
+                answer++;
+            }
+        }
+        return answer;
+    }   
+}
+```
